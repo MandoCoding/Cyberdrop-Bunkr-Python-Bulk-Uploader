@@ -2,6 +2,7 @@
 
 It works, more than I ever expected. There's still a lot to do:
 
+- Figure out how to do this for bunkr - Write Uploaded album urls to file for easy posting :EZ:
 - Error Handling - No folders to upload
 - Error Handling - file upload fail, retry?
 - Error Handling - file upload duplicate, what does it do?
