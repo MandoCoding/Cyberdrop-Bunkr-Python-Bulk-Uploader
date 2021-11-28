@@ -1,7 +1,7 @@
 # Cyberdrop-Bunkr-Lolisafe-Python-Uploader
 
 It works, more than I ever expected. There's still a lot to do:
-- Allow updates to folders
+
 - Error Handling - No folders to upload
 - Error Handling - file upload fail, retry?
 - Error Handling - file upload duplicate, what does it do?
@@ -11,6 +11,7 @@ It works, more than I ever expected. There's still a lot to do:
 - Improve upload progress to fill bar
 - Parallel uploads?
 - Create exe
+- Allow updates to folders - is this possible via API or will it have to scrape current album contents and upload difference?
 
 
 
