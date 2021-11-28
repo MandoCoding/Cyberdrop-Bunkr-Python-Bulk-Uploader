@@ -9,3 +9,6 @@ It works, more than I ever expected. There's still a lot to do:
 - Tidy up everything
 - Show upload progress - basic version is number of files, fancy version is scroll bar
 - Parallel uploads?
+
+
+Many thanks to Marcus' lolisafe bash script
