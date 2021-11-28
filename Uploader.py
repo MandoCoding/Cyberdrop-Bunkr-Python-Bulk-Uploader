@@ -1,7 +1,12 @@
 import linecache
 import os
-import requests
 
+import colorama as colorama
+import requests
+from colorama import init
+from colorama import Fore, Back, Style
+
+init()
 base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
 
 #Start some lists
@@ -18,14 +23,14 @@ upload_dir = root + "/Uploads/"
 isExist = os.path.exists(upload_dir)
 if not isExist:
     os.makedirs(upload_dir)
-    input('The uploads folder has been created. Copy in the folders you want to upload and then press enter to continue')
+    input(Fore.GREEN +'The uploads folder has been created. Copy in the folders you want to upload and then press enter to continue')
 
 #Read the userdata file
 token = linecache.getline('userdata.txt', 1).rstrip()
 
 #If userdata file is empty request user input
 if token == "":
-    token = input('Enter Token and press enter: ')
+    token = input(Fore.GREEN +'Enter Token and press enter: ')
 
 #Write data back to userdata file, can't write to specific line so all must be written again
 userinp = open("userdata.txt","w+")
@@ -64,12 +69,12 @@ for i in Dirlist:
     #was it a success?
     success = data['success']
     if success == False:
-        print('Album \'',album_name,'\' already exists')
+        print(Fore.RED + 'Album \'',album_name,'\' already exists')
         Albumalreadyuplist.append(album_name)
         #Need to work out how to skip to next item
     elif success == True:
         album_id = data['id']
-        print('Album \'',album_name,'\' created successfully with ID:', album_id)
+        print(Fore.GREEN + 'Album \'',album_name,'\' created successfully with ID:', album_id)
         print()
 
         #Now we start on the files by creating a list of them
@@ -78,7 +83,7 @@ for i in Dirlist:
             for file in files:
                 Filelist.append(file)
         album_file_number = len(Filelist)
-        print('Uploading ', album_file_number, ' files')
+        print(Fore.YELLOW + 'Uploading ', album_file_number, ' files')
 
         #the generic api upload url
         upload_file_url = base_url+"/api/upload"
@@ -91,7 +96,7 @@ for i in Dirlist:
         Faillist = list()
         for file in Filelist:
             print()
-            print("uploading file",file_number, 'of', album_file_number,':', file)
+            print(Fore.YELLOW + "uploading file",file_number, 'of', album_file_number,':', file)
             file_number = file_number + 1
             success_count = 0
             files = {'files[]': open(file, 'rb')}
@@ -99,10 +104,10 @@ for i in Dirlist:
             data2 = response.json()
             success = data2['success']
             if success == True:
-                print(file, "uploaded succesfully")
+                print(Fore.GREEN + file, "uploaded succesfully")
                 success_count = success_count + 1
             elif success == False:
-                print(file, "upload failed")
+                print(Fore.RED + file, "upload failed")
                 Faillist.append(file)
         print()
 
@@ -115,33 +120,33 @@ for i in Dirlist:
                 albumurl = base_url + '/a/' + attrs['identifier']
                 break
         else:
-            print('Nothing found!')
+            print(Fore.RED + 'Nothing found!')
             albumurl = ""
         Albumurllist.append(albumurl)
 
         #Did album upload every file successfully or not?
         if (file_number - 1) == album_file_number:
-            print('Album \'',album_name,'\' uploaded successfully:', albumurl)
+            print(Fore.GREEN + 'Album \'',album_name,'\' uploaded successfully:', albumurl)
             Albumsuccesslist.append(album_name) #remove later or change to success list
             Albumsuccesscount = Albumsuccesscount + 1
         else:
-            print('Album not fully uploaded.', success_count, 'files uploaded successfully. The following files failed to upload:', Faillist)
+            print(Fore.YELLOW + 'Album not fully uploaded.', success_count, 'files uploaded successfully. The following files failed to upload:', Faillist)
             Albumfaillist.append(album_name)
         print()
         print()
 
 #Success/Fail Stats
 if Albumsuccesscount == album_count:
-    print('All albums uploaded successfully: ', Albumsuccesslist)
-    print(Albumurllist)
+    print(Fore.GREEN + 'All albums uploaded successfully: ', Albumsuccesslist)
+    print(Fore.GREEN, Albumurllist)
 elif Albumsuccesscount == 0:
     print()
-    print('No albums uploaded, they already existed')
+    print(Fore.RED + 'No albums uploaded, they already existed')
 else:
-    print('The following albums uploaded successfully:', Albumsuccesslist)
-    print(Albumurllist)
-    print('The following albums already existed:', Albumalreadyuplist)
-    print('The following albums failed to upload successfully:', Albumfaillist)
+    print(Fore.GREEN + 'The following albums uploaded successfully:', Albumsuccesslist)
+    print(Fore.GREEN, Albumurllist)
+    print(Fore.YELLOW + 'The following albums already existed:', Albumalreadyuplist)
+    print(Fore.RED + 'The following albums failed to upload successfully:', Albumfaillist)
 
 #write uploaded album urls to a txt file
 os.chdir(base_dir) #Move back to base directory
