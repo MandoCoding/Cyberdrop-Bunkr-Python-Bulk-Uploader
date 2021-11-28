@@ -1,4 +1,4 @@
-# Cyberdrop-Bunkr-lolisafe-Python-Uploader
+# Cyberdrop-Bunkr-Lolisafe-Python-Uploader
 
 It works, more than I ever expected. There's still a lot to do:
 - Check for and create /Uploads/ directory
