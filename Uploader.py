@@ -71,17 +71,27 @@ for i in Dirlist:
 
     #lets do this
     file_number = 1
+    Faillist = list()
     for file in Filelist:
         print()
         print("uploading file",file_number, 'of', album_file_number,':', file)
         file_number = file_number + 1
+        success_count = 0
         files = {'files[]': open(file, 'rb')}
         response = requests.post(upload_file_url, headers=fileheaders, files=files)
         data2 = response.json()
         success = data2['success']
         if success == True:
             print(file, "uploaded succesfully")
+            success_count = success_count + 1
         elif success == False:
             print(file, "upload failed")
+            Faillist.append(file)
+    print()
+    if (file_number - 1) == album_file_number:
+        print('Album', album_name, 'uploaded successfully')
+    else:
+        print('Album not fully uploaded.', success_count, 'files uploaded successfully. The following files failed to upload:', Faillist)
     print()
     print()
+exitText = input("\nAll albums uploaded successfully. Press enter to quit.") #Need to rework this based on earlier
