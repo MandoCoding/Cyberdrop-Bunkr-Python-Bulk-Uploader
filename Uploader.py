@@ -7,7 +7,7 @@ from colorama import init
 from colorama import Fore, Back, Style
 
 init()
-base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
+base_url = "https://bunkr.is" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
 
 #Start some lists
 Dirlist = list()
@@ -115,6 +115,7 @@ for i in Dirlist:
         albumurlheaders = {'token': f"{token}", }
         albumr = requests.get(albums_url, headers=albumurlheaders)  # gets list of albums
         albumdata = albumr.json()
+        print(albumdata)
         for attrs in albumdata['albums']:
             if attrs['id'] == album_id:
                 albumurl = base_url + '/a/' + attrs['identifier']
@@ -137,14 +138,14 @@ for i in Dirlist:
 
 #Success/Fail Stats
 if Albumsuccesscount == album_count:
-    print(Fore.GREEN + 'All albums uploaded successfully: ', Albumsuccesslist)
-    print(Fore.GREEN, Albumurllist)
+    print(Fore.GREEN + 'All albums uploaded successfully: ', FORE.CYAN, Albumsuccesslist)
+    print(Fore.CYAN, Albumurllist)
 elif Albumsuccesscount == 0:
     print()
     print(Fore.RED + 'No albums uploaded, they already existed')
 else:
     print(Fore.GREEN + 'The following albums uploaded successfully:', Albumsuccesslist)
-    print(Fore.GREEN, Albumurllist)
+    print(Fore.CYAN, Albumurllist)
     print(Fore.YELLOW + 'The following albums already existed:', Albumalreadyuplist)
     print(Fore.RED + 'The following albums failed to upload successfully:', Albumfaillist)
 
