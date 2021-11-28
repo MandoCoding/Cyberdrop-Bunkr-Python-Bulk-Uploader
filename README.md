@@ -8,9 +8,12 @@ It works, more than I ever expected. There's still a lot to do:
 - Tidy up variables
 - Improve upload progress to fill bar
 - Parallel uploads?
+- Create exe
+
 
 
 Many thanks to Marcus' lolisafe bash script
+
 
 
 Done:
