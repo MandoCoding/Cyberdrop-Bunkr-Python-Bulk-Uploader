@@ -1,13 +1,12 @@
 import linecache
 import os
-
-import colorama as colorama
+import math
 import requests
 from colorama import init
 from colorama import Fore, Back, Style
 
 init()
-base_url = "https://bunkr.is" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
+base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
 
 #Start some lists
 Dirlist = list()
@@ -115,15 +114,33 @@ for i in Dirlist:
         albumurlheaders = {'token': f"{token}", }
         albumr = requests.get(albums_url, headers=albumurlheaders)  # gets list of albums
         albumdata = albumr.json()
-        print(albumdata)
-        for attrs in albumdata['albums']:
-            if attrs['id'] == album_id:
-                albumurl = base_url + '/a/' + attrs['identifier']
-                break
+
+        #shitty bunkr album URL fix by calculating page of uploads list the album is on, I hate this
+        if base_url == "https://bunkr.is":
+            pagecount = str(math.floor(albumdata['count'] / 25))
+            albums_url = "https://bunkr.is/api/albums/" + pagecount
+            albumurlheaders = {'token': f"{token}", }
+            r = requests.get(albums_url, headers=albumurlheaders)  # gets list of albums
+            albumdata = r.json()
+            for attrs in albumdata['albums']:
+                if attrs['id'] == album_id:
+                    albumurl = base_url + '/a/' + attrs['identifier']
+                    break
+            else:
+                print(Fore.RED + 'Nothing found!')
+                albumurl = ""
+            Albumurllist.append(albumurl)
+
+        #The normal cyberdrop approach (much better)
         else:
-            print(Fore.RED + 'Nothing found!')
-            albumurl = ""
-        Albumurllist.append(albumurl)
+            for attrs in albumdata['albums']:
+                if attrs['id'] == album_id:
+                    albumurl = base_url + '/a/' + attrs['identifier']
+                    break
+            else:
+                print(Fore.RED + 'Nothing found!')
+                albumurl = ""
+            Albumurllist.append(albumurl)
 
         #Did album upload every file successfully or not?
         if (file_number - 1) == album_file_number:
