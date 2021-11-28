@@ -2,6 +2,7 @@
 
 It works, more than I ever expected. There's still a lot to do:
 - Error Handling (album already exists = album ID fail right now)
+- Error Handling - No folders to upload
 - batch file to install pre-requisites
 - Write Uploaded album urls to file for easy posting :EZ:
 - Tidy up the prints 
