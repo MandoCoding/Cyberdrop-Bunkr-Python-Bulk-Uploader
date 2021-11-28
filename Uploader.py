@@ -138,7 +138,7 @@ for i in Dirlist:
 
 #Success/Fail Stats
 if Albumsuccesscount == album_count:
-    print(Fore.GREEN + 'All albums uploaded successfully: ', FORE.CYAN, Albumsuccesslist)
+    print(Fore.GREEN + 'All albums uploaded successfully: ', Fore.CYAN, Albumsuccesslist)
     print(Fore.CYAN, Albumurllist)
 elif Albumsuccesscount == 0:
     print()
