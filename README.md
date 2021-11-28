@@ -7,5 +7,5 @@ It works, more than I ever expected. There's still a lot to do:
 - Write Uploaded album urls to file for easy posting :EZ:
 - Tidy up the prints 
 - Tidy up everything
-- Show upload progress
+- Show upload progress - basic version is number of files, fancy version is scroll bar
 - Parallel uploads?
