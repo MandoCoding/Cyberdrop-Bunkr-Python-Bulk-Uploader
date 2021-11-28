@@ -2,7 +2,7 @@
 
 It works, more than I ever expected. There's still a lot to do:
 
-- Figure out how to do this for bunkr - Write Uploaded album urls to file for easy posting :EZ:
+- New output txt for every batch upload?
 - Error Handling - No folders to upload
 - Error Handling - file upload fail, retry?
 - Error Handling - file upload duplicate, what does it do?
@@ -25,4 +25,5 @@ Done:
 - Close out line "Uploads complete, press enter etc..."
 - Show upload progress - basic version is number of files
 - Error Handling (album already exists = album ID fail right now)
-- Write Uploaded album urls to file for easy posting :EZ:
+- Cyberdrop - Write Uploaded album urls to file for easy posting :EZ:
+- bunkr - Write Uploaded album urls to file for easy posting :EZ: - I hate how I've had to do this but it works so far as I can tell
