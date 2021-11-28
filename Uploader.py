@@ -16,11 +16,6 @@ userinp = open("userdata.txt","w+")
 userinp.write(token)
 userinp.close()
 
-#Confirmation of user info, remove later
-print()
-print('Token:    ', token)
-print()
-
 #Sort the base directory and start a list for upload subfolders (Dirlist)
 cwd = os.getcwd()  #gets current directory
 upload_dir = cwd + "/Uploads/"
