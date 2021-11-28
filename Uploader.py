@@ -4,6 +4,23 @@ import requests
 
 base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
 
+#Start some lists
+Dirlist = list()
+Albumfaillist = list()
+Albumsuccesslist = list()
+Albumurllist = list()
+Albumsuccesscount = 0
+
+#Check for and create the upload directory
+root = os.path.dirname(__file__)
+upload_dir = root + "/Uploads/"
+isExist = os.path.exists(upload_dir)
+if isExist:
+    print("Folder already exists")
+if not isExist:
+    os.makedirs(upload_dir)
+    input('The uploads folder has been created. Copy in the folders you want to upload and then press enter to continue')
+
 #Read the userdata file
 token = linecache.getline('userdata.txt', 1).rstrip()
 
@@ -16,16 +33,17 @@ userinp = open("userdata.txt","w+")
 userinp.write(token)
 userinp.close()
 
-#Sort the base directory and start a list for upload subfolders (Dirlist)
+#Sort the base directory
 cwd = os.getcwd()  #gets current directory
 upload_dir = cwd + "/Uploads/"
-Dirlist = list()
+
 
 #Create a list of upload subfolders
 for root, subdirectories, files in os.walk(upload_dir):
     for subdirectory in subdirectories:
         dir = os.path.join(root, subdirectory)
         Dirlist.append(dir)
+        album_count = len(Dirlist)
 
 #For each subfolder print the directory, album name and files
 for i in Dirlist:
@@ -88,10 +106,37 @@ for i in Dirlist:
             print(file, "upload failed")
             Faillist.append(file)
     print()
+
+    #Get the album url and add to list
+    albumurlheaders = {'token': f"{token}", }
+    albumr = requests.get(albums_url, headers=albumurlheaders)  # gets list of albums
+    albumdata = albumr.json()
+    for attrs in albumdata['albums']:
+        if attrs['id'] == album_id:
+            albumurl = base_url + '/a/' + attrs['identifier']
+            break
+    else:
+        print('Nothing found!')
+        albumurl = ""
+    Albumurllist.append(albumurl)
+
+    #Did album upload every file successfully or not?
     if (file_number - 1) == album_file_number:
-        print('Album', album_name, 'uploaded successfully')
+        print('Album \'',album_name,'\' uploaded successfully:', albumurl)
+        Albumsuccesslist.append(album_name) #remove later or change to success list
+        Albumsuccesscount = Albumsuccesscount + 1
     else:
         print('Album not fully uploaded.', success_count, 'files uploaded successfully. The following files failed to upload:', Faillist)
+        Albumfaillist.append(album_name)
     print()
     print()
-exitText = input("\nAll albums uploaded successfully. Press enter to quit.") #Need to rework this based on earlier
+
+#Success/Fail Stats
+if Albumsuccesscount == album_count:
+    print('All albums uploaded successfully: ', Albumsuccesslist)
+    print(Albumurllist)
+else:
+    print('The following albums uploaded successfully:', Albumsuccesslist)
+    print('The following albums failed to upload successfully:', Albumfaillist)
+
+exitText = input("\nPress enter to quit.") #Need to rework this based on earlier
