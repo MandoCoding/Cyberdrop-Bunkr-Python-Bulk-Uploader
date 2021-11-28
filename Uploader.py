@@ -42,7 +42,7 @@ for i in Dirlist:
     #create the album
     albumheaders = {'Content-Type': 'application/json', 'token': f"{token}",}
     data = album_json
-    r = requests.post(albums_url, headers=albumheaders, data=data)  # creates the album on Cyberdrop
+    r = requests.post(albums_url, headers=albumheaders, data=data)  # creates the album on cyberdrop/bunkr etc.
     data = r.json()
 
     #was it a success?
