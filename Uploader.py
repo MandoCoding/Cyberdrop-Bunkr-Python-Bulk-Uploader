@@ -2,7 +2,7 @@ import linecache
 import os
 import requests
 
-base_url = "https://cyberdrop.me"
+base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
 
 #Read the userdata file
 token = linecache.getline('userdata.txt', 1).rstrip()
@@ -30,53 +30,51 @@ for root, subdirectories, files in os.walk(upload_dir):
 #For each subfolder print the directory, album name and files
 for i in Dirlist:
     dir = i + '/'
-    print("Directory:  ", dir)
     os.chdir(dir) #change current directory to the subfolder to make the following code easier
     album_name = os.path.basename(os.getcwd())
-    print("Album Name: ", album_name)
-    print()
 
     #Create Album JSON (whatever that means)
     album_json = '{ "name": "' + album_name + '", "description": "", "public": true, "download": true }';  # copied from Marcus
+    print()
     print("Creating album: ", album_name)
     albums_url = base_url+"/api/albums"
 
     #create the album
-    albumheaders = {
-        'Content-Type': 'application/json',
-        'token': f"{token}",
-    }
+    albumheaders = {'Content-Type': 'application/json', 'token': f"{token}",}
     data = album_json
     r = requests.post(albums_url, headers=albumheaders, data=data)  # creates the album on Cyberdrop
     data = r.json()
 
     #was it a success?
     success = data['success']
-    print('Success?: ', success)
     if success == True:
         album_id = data['id']
-        print(album_id)
+        print('Album', album_name, 'created successfully with ID:', album_id)
+        print()
     elif success == False:
         print("Album already exists")
+        #Need to work out how to skip to next item
 
     #Now we start on the files by creating a list of them
     Filelist = list()
     for root, subdirectories, files in os.walk(dir):
         for file in files:
             Filelist.append(file)
+    album_file_number = len(Filelist)
+    print('Uploading ', album_file_number, ' files')
 
     #the generic api upload url
     upload_file_url = base_url+"/api/upload"
 
     #give it some headers
-    fileheaders = {
-        'token': f"{token}",
-        'albumid': f"{album_id}",
-    }
+    fileheaders = {'token': f"{token}", 'albumid': f"{album_id}",}
 
     #lets do this
+    file_number = 1
     for file in Filelist:
-        print("uploading: ", file)
+        print()
+        print("uploading file",file_number, 'of', album_file_number,':', file)
+        file_number = file_number + 1
         files = {'files[]': open(file, 'rb')}
         response = requests.post(upload_file_url, headers=fileheaders, files=files)
         data2 = response.json()
@@ -85,3 +83,5 @@ for i in Dirlist:
             print(file, "uploaded succesfully")
         elif success == False:
             print(file, "upload failed")
+    print()
+    print()
