@@ -2,6 +2,7 @@
 
 It works, more than I ever expected. There's still a lot to do:
 
+- Bunkrs chunked uploads break the script - connection reset error :feelsrageman 
 - New output txt for every batch upload?
 - Error Handling - No folders to upload
 - Error Handling - file upload fail, retry?
