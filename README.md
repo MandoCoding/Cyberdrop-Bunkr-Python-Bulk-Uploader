@@ -7,7 +7,7 @@ It works, more than I ever expected. There's still a lot to do:
 - Error Handling - No folders to upload
 - Error Handling - file upload fail, retry?
 - Error Handling - file upload duplicate, what does it do?
-- batch file to install pre-requisites
+- Create bat file to install pre-requisites
 - Tidy up the prints 
 - Tidy up variables
 - Improve upload progress to fill bar
