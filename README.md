@@ -1,5 +1,6 @@
 # Cyberdrop-Bunkr-Lolisafe-Python-Uploader
 Python script to batch upload every subfolder in the uploads directory to cyberdrop or bunkr as configured
+
 Many thanks to Marcus' lolisafe bash script
 
 # Information
