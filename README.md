@@ -31,7 +31,6 @@ It works, more than I ever expected. There's still a lot to do:
 
 # Installation
 1. Download and install Python to Path
-
 ![0001_add_Python_to_Path.png](https://s1.putme.ga/0001_add_Python_to_Path.png)
 2. Download the latest release from https://github.com/MandoCoding/Cyberdrop-Bunkr-Lolisafe-Python-Uploader/releases (or just master for now) and extract
 3. Paste folders to be uploaded into the uploads folder
