@@ -21,3 +21,6 @@ Created using Python 3.10
 # Usage
 1. Paste folders to be uploaded into the uploads folder
 2. Run Uploader.py
+
+# Known Major Issues:
+Does not support files larger than 100 MB on bunkr despite bunkrs max file size limit being 5 GB
