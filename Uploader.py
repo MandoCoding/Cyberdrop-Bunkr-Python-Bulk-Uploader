@@ -7,7 +7,8 @@ from colorama import init
 from colorama import Fore, Back, Style
 
 init()
-base_url = "https://cyberdrop.me" #This can be set to https://bunkr.is or any other lolisafe instance. Remember to update the userdata file with the appropriate token
+
+base_url = None
 
 #Start some lists
 Dirlist = list()
@@ -26,16 +27,27 @@ if not isExist:
     input(Fore.GREEN +'The uploads folder has been created. Copy in the folders you want to upload and then press enter to continue')
 
 #Read the userdata file
-token = linecache.getline('userdata.txt', 1).rstrip()
+site = linecache.getline('userdata.txt', 1).rstrip()
+token = linecache.getline('userdata.txt', 2).rstrip()
+
 
 #If userdata file is empty request user input
+if site == "":
+    site = input(Fore.GREEN +'Enter site and press enter: ')
 if token == "":
     token = input(Fore.GREEN +'Enter Token and press enter: ')
 
-    #Write data back to userdata file, can't write to specific line so all must be written again
-    userinp = open("userdata.txt","w+")
-    userinp.write(token)
-    userinp.close()
+#Write data back to userdata file, can't write to specific line so all must be written again
+userinp = open("userdata.txt","w+")
+userinp.write(site)
+userinp.write("\n")
+userinp.write(token)
+userinp.close()
+
+if site == "cyberdrop":
+    base_url = str("https://cyberdrop.me")
+if site == "bunkr":
+    base_url = str("https://bunkr.is")
 
 #Sort the base directory
 cwd = os.getcwd()  #gets current directory
@@ -57,7 +69,7 @@ for i in Dirlist:
 
     #Create Album JSON (whatever that means)
     album_json = '{ "name": "' + album_name + '", "description": "", "public": true, "download": true }';  # copied from Marcus
-    albums_url = base_url+"/api/albums"
+    albums_url = base_url+ "/api/albums"
 
     #create the album
     albumheaders = {'Content-Type': 'application/json', 'token': f"{token}",}
