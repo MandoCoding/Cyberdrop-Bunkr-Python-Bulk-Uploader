@@ -2,6 +2,7 @@ import linecache
 import os
 import math
 import requests
+import datetime
 from colorama import init
 from colorama import Fore, Back, Style
 
@@ -31,18 +32,17 @@ token = linecache.getline('userdata.txt', 1).rstrip()
 if token == "":
     token = input(Fore.GREEN +'Enter Token and press enter: ')
 
-#Write data back to userdata file, can't write to specific line so all must be written again
-userinp = open("userdata.txt","w+")
-userinp.write(token)
-userinp.close()
+    #Write data back to userdata file, can't write to specific line so all must be written again
+    userinp = open("userdata.txt","w+")
+    userinp.write(token)
+    userinp.close()
 
 #Sort the base directory
 cwd = os.getcwd()  #gets current directory
 base_dir = cwd
 upload_dir = cwd + "/Uploads/"
 
-
-#Create a list of upload subfolders
+#Create a list of folders to be uploaded
 for root, subdirectories, files in os.walk(upload_dir):
     for subdirectory in subdirectories:
         dir = os.path.join(root, subdirectory)
@@ -88,17 +88,18 @@ for i in Dirlist:
         upload_file_url = base_url+"/api/upload"
 
         #give it some headers
-        fileheaders = {'token': f"{token}", 'albumid': f"{album_id}",}
+        fileheaders = {'token': f"{token}", 'albumid': f"{album_id}"}
 
         #lets do this
         file_number = 1
         Faillist = list()
         for file in Filelist:
             print()
-            print(Fore.YELLOW + "uploading file",file_number, 'of', album_file_number,':', file)
+            print(Fore.YELLOW + "uploading file",file_number, 'of', album_file_number,':', file, 'to:', album_name)
             file_number = file_number + 1
             success_count = 0
             files = {'files[]': open(file, 'rb')}
+            response = requests.Session()
             response = requests.post(upload_file_url, headers=fileheaders, files=files)
             data2 = response.json()
             success = data2['success']
@@ -166,13 +167,19 @@ else:
     print(Fore.YELLOW + 'The following albums already existed:', Albumalreadyuplist)
     print(Fore.RED + 'The following albums failed to upload successfully:', Albumfaillist)
 
+
 #write uploaded album urls to a txt file
 os.chdir(base_dir) #Move back to base directory
-output = open("uploaded_album_urls.txt","w+") #Open file, creates if doesn't already exist
+filename = datetime.datetime.now()
+output = open(filename.strftime("%Y-%m-%d_%H-%M")+"_uploaded_album_urls.txt", "w") #Open file, creates if doesn't already exist
+
+#write a combined list of album names and URLs
 output.write('Combined album name + URL list:' + '\n')
 for i in range(len(Albumurllist)):
-    output.write(Albumsuccesslist[i] + '\t ' + Albumurllist[i] +'\n')
+    output.write(Albumsuccesslist[i] + '\n' + Albumurllist[i] +'\n')
 output.write('\n')
+
+#write a list of just URLs
 output.write('Bare URL list:' + '\n')
 for url in Albumurllist:
     output.write(url + '\n')
