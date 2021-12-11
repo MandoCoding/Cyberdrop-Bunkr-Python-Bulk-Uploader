@@ -6,9 +6,6 @@ Many thanks to Marcus' lolisafe bash script
 # Information
 Created using Python 3.10
 
-# Random crap, remove later
-It works, more than I ever expected. There's still a lot to do:
-
 # Installation
 1. Download and install Python to Path
 
@@ -18,7 +15,7 @@ It works, more than I ever expected. There's still a lot to do:
 3. Paste folders to be uploaded into the uploads folder
 4. Run Start.bat to install all the necessary pre-requisites and start the download script
 5. Provide your bunkr or cyberdrop tokens when requested. These can be found in your dashboard on the left, click on 'Manage your token'. 
-6. The script outputs a timestamped txt file listing the album names and URLs
+6. The script outputs a date and time stamped txt file listing the album names and URLs
 
 
 # Usage
