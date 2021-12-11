@@ -33,7 +33,7 @@ token = linecache.getline('userdata.txt', 2).rstrip()
 
 #If userdata file is empty request user input
 if site == "":
-    site = input(Fore.GREEN +'Enter site and press enter: ')
+    site = input(Fore.GREEN +'Enter site (i.e. cyberdrop or bunkr) and press enter: ')
 if token == "":
     token = input(Fore.GREEN +'Enter Token and press enter: ')
 
