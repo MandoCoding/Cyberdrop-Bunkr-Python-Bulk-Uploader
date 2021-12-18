@@ -3,6 +3,7 @@ import os
 import math
 import requests
 import datetime
+import time
 from colorama import init
 from colorama import Fore, Back, Style
 
@@ -102,7 +103,7 @@ for i in Dirlist:
         #give it some headers
         fileheaders = {'token': f"{token}", 'albumid': f"{album_id}"}
 
-        #lets do this
+        #lets do this - uploading files
         file_number = 1
         Faillist = list()
         for file in Filelist:
@@ -110,9 +111,18 @@ for i in Dirlist:
             print(Fore.YELLOW + "uploading file",file_number, 'of', album_file_number,':', file, 'to:', album_name)
             file_number = file_number + 1
             success_count = 0
-            files = {'files[]': open(file, 'rb')}
             response = requests.Session()
-            response = requests.post(upload_file_url, headers=fileheaders, files=files)
+
+            attempts = 0
+            while attempts <10:
+                try:
+                    files = {'files[]': open(file, 'rb')}
+                    response = requests.post(upload_file_url, headers=fileheaders, files=files)
+                    attempts = 11
+                except:
+                    attempts += 1
+                    print("upload failed, trying again in 3 seconds")
+                    time.sleep(3)
             data2 = response.json()
             success = data2['success']
             if success == True:
@@ -122,6 +132,7 @@ for i in Dirlist:
                 print(Fore.RED + file, "upload failed")
                 Faillist.append(file)
         print()
+
 
         #Get the album url and add to list
         albumurlheaders = {'token': f"{token}", }
